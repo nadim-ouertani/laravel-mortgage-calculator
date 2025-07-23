@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tech_exam_laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      # This mirrors your entire tech-exam folder to /var/www in container
+      - ./:/var/www
+      # PHP configuration
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - tech_exam_network
+    depends_on:
+      - db
+      - redis
+
+  webserver:
+    image: nginx:alpine
+    container_name: tech_exam_nginx
+    restart: unless-stopped
+    ports:
+      # Using 8080 instead of 8000 to avoid conflicts
+      - "8080:80"
+    volumes:
+      # Same mirroring for nginx to serve files
+      - ./:/var/www
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - tech_exam_network
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: tech_exam_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: mortgage_calculator
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_PASSWORD: secret
+      MYSQL_USER: mortgage_user
+    volumes:
+      - tech_exam_dbdata:/var/lib/mysql
+    ports:
+      # Using 3307 instead of 3306 to avoid MySQL conflicts
+      - "3307:3306"
+    networks:
+      - tech_exam_network
+
+  redis:
+    image: redis:alpine
+    container_name: tech_exam_redis
+    restart: unless-stopped
+    ports:
+      # Using 6380 instead of 6379 to avoid Redis conflicts
+      - "6380:6379"
+    networks:
+      - tech_exam_network
+
+
+networks:
+  tech_exam_network:
+    driver: bridge
+
+volumes:
+  tech_exam_dbdata:
+    driver: local
