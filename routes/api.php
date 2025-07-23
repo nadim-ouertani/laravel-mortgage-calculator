@@ -10,7 +10,5 @@ Route::get('/user', function (Request $request) {
 
 // Mortgage loan calculator API routes
 Route::prefix('loans')->group(function () {
-    Route::post('/calculate', [LoanController::class, 'calculateLoan']);
-    Route::get('/{id}', [LoanController::class, 'show']);
-    Route::delete('/{id}', [LoanController::class, 'destroy']);
+    Route::post('/calculate', [LoanController::class, 'calculate']);
 });
