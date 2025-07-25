@@ -12,7 +12,11 @@ readonly class LoanAmount
     public function __construct(float $amount)
     {
         if ($amount < LoanValidationConstants::MIN_LOAN_AMOUNT) {
-            throw new InvalidArgumentException('Loan amount must be at least AED ' . number_format(LoanValidationConstants::MIN_LOAN_AMOUNT));
+            throw new InvalidArgumentException('Loan amount too small');
+        }
+
+        if ($amount > LoanValidationConstants::MAX_LOAN_AMOUNT) {
+            throw new InvalidArgumentException('Loan amount too large');
         }
 
         $this->value = round($amount, 2);
@@ -25,6 +29,17 @@ readonly class LoanAmount
 
     public function toString(): string
     {
-        return number_format($this->value, 2);
+        return number_format($this->value, LoanValidationConstants::CURRENCY_DECIMAL_PLACES);
+    }
+
+    public function __toString(): string 
+    {
+        return (string) $this->value;
+    }
+
+    // Floating point comparison - close enough is good enough
+    public function equals(LoanAmount $other): bool
+    {
+        return abs($this->value - $other->value) < LoanValidationConstants::DEFAULT_TOLERANCE;
     }
 }

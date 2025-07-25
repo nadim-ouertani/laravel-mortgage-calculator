@@ -2,17 +2,18 @@
 
 namespace App\Domain\Loan\ValueObjects;
 
-use App\Domain\Loan\Constants\LoanValidationConstants;
 use InvalidArgumentException;
 
 readonly class LoanTerm
 {
+    private const MONTHS_PER_YEAR = 12;
+    
     private int $years;
 
     public function __construct(int $years)
     {
-        if ($years < LoanValidationConstants::MIN_LOAN_TERM_YEARS) {
-            throw new InvalidArgumentException('Loan term must be at least 1 year');
+        if ($years <= 0) {
+            throw new InvalidArgumentException('Loan term must be greater than zero');
         }
 
         $this->years = $years;
@@ -25,6 +26,22 @@ readonly class LoanTerm
 
     public function getMonths(): int
     {
-        return $this->years * LoanValidationConstants::MONTHS_PER_YEAR;
+        return $this->years * self::MONTHS_PER_YEAR; // simple math
+    }
+
+    public function toString(): string
+    {
+        // Handle singular/plural properly
+        return $this->years . ' ' . ($this->years === 1 ? 'year' : 'years');
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->years;
+    }
+
+    public function equals(LoanTerm $other): bool
+    {
+        return $this->years === $other->years; // int comparison is exact
     }
 }

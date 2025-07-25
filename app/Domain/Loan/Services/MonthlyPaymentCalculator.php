@@ -2,26 +2,26 @@
 
 namespace App\Domain\Loan\Services;
 
-use App\Domain\Loan\ValueObjects\LoanAmount;
-use App\Domain\Loan\ValueObjects\InterestRate;
-use App\Domain\Loan\Constants\LoanValidationConstants;
+use App\Domain\Loan\Entities\Loan;
+use App\Domain\Loan\ValueObjects\MonthlyPayment;
 
 class MonthlyPaymentCalculator
 {
-    public function calculate(LoanAmount $loanAmount, InterestRate $interestRate, int $termYears): float
+    public function calculate(Loan $loan): MonthlyPayment
     {
-        $principal = $loanAmount->getValue();
-        $monthlyRate = $interestRate->getMonthlyRate();
-        $numberOfMonths = $termYears * LoanValidationConstants::MONTHS_PER_YEAR;
+        $amount = $loan->getLoanAmount()->getValue();
+        $rate = $loan->getInterestRate()->getMonthlyRate();
+        $months = $loan->getLoanTerm()->getMonths();
 
-        // Handle zero interest rate case
-        if ($monthlyRate == 0) {
-            return $principal / $numberOfMonths;
+        if (abs($rate) < 0.00001) {
+            // no interest, just divide evenly
+            $payment = $amount / $months;
+        } else {
+            // standard amortization formula
+            $payment = ($amount * $rate) / 
+                (1 - pow(1 + $rate, -$months));
         }
 
-        // Standard mortgage payment formula
-        $monthlyPayment = ($principal * $monthlyRate) / (1 - pow(1 + $monthlyRate, -$numberOfMonths));
-        
-        return round($monthlyPayment, 2);
+        return new MonthlyPayment($payment);
     }
 }

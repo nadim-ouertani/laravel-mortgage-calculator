@@ -4,62 +4,86 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoanCalculationRequest;
-use App\Domain\Loan\ValueObjects\LoanAmount;
-use App\Domain\Loan\ValueObjects\InterestRate;
-use App\Domain\Loan\ValueObjects\LoanTerm;
-use App\Domain\Loan\ValueObjects\ExtraPayment;
-use App\Domain\Loan\Entities\Loan;
-use App\Domain\Loan\Services\MonthlyPaymentCalculator;
-use App\Domain\Loan\Services\AmortizationService;
+use App\Application\Services\LoanApplicationService;
+use App\Http\Transformers\LoanTransformer;
 use Illuminate\Http\JsonResponse;
 
 class LoanController extends Controller
 {
     public function __construct(
-        private MonthlyPaymentCalculator $paymentCalculator,
-        private AmortizationService $amortizationService
+        private LoanApplicationService $loanService,
+        private LoanTransformer $transformer
     ) {}
 
-    public function calculate(LoanCalculationRequest $request): JsonResponse
+    public function calculateLoan(LoanCalculationRequest $request): JsonResponse
     {
         try {
-            $loanAmount = new LoanAmount($request->loan_amount);
-            $interestRate = new InterestRate($request->annual_interest_rate);
-            $loanTerm = new LoanTerm($request->loan_term_years);
-            $extraPayment = new ExtraPayment($request->monthly_extra_payment ?? 0);
-
-            $loan = new Loan(
-                $loanAmount,
-                $interestRate,
-                $loanTerm->getYears(),
-                $extraPayment->getValue()
+            $data = $request->validated();
+            $result = $this->loanService->createLoanCalculation($data);
+            
+            $response = $this->transformer->transformLoanCalculationResponse(
+                $result['loan'], 
+                $result['standard_schedule'], 
+                $result['extra_payment_schedule']
             );
-
-            $monthlyPayment = $this->paymentCalculator->calculate(
-                $loanAmount,
-                $interestRate,
-                $loanTerm->getYears()
-            );
-
-            $loan->setCalculatedMonthlyPayment($monthlyPayment);
-            $loan->setEffectiveInterestRate($interestRate->getAnnualRate());
-
-            $schedule = $this->amortizationService->generateSchedule($loan);
-
+            
+            return response()->json($response);
+        } catch (\InvalidArgumentException $e) {
             return response()->json([
-                'loan_details' => [
-                    'loan_amount' => $loanAmount->getValue(),
-                    'annual_interest_rate' => $interestRate->getAnnualRate(),
-                    'loan_term_years' => $loanTerm->getYears(),
-                    'monthly_extra_payment' => $extraPayment->getValue(),
-                    'calculated_monthly_payment' => $monthlyPayment,
-                    'effective_interest_rate' => $interestRate->getAnnualRate()
-                ],
-                'amortization_schedule' => $schedule
-            ]);
-
+                'success' => false,
+                'message' => $e->getMessage(),
+                'errors' => ['calculation' => [$e->getMessage()]]
+            ], 422);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while processing your request',
+                'errors' => ['general' => ['Unable to calculate loan payment']]
+            ], 500);
         }
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $result = $this->loanService->getLoanWithSchedules($id);
+            $response = $this->transformer->transformLoanDetailsResponse(
+                $result['loan'], 
+                $result['standard_schedule'], 
+                $result['extra_payment_schedule']
+            );
+
+            return response()->json($response);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Loan not found',
+                'errors' => ['loan_id' => ['The specified loan does not exist']]
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while retrieving the loan',
+                'errors' => ['general' => ['Unable to retrieve loan details']]
+            ], 500);
+        }
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $deleted = $this->loanService->deleteLoan($id);
+        
+        if ($deleted) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Loan deleted successfully'
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Loan not found',
+            'errors' => ['loan_id' => ['The specified loan does not exist']]
+        ], 404);
     }
 }
