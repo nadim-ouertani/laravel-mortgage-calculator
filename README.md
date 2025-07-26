@@ -50,15 +50,8 @@ A comprehensive mortgage loan calculator web application built with **Laravel 11
    docker compose exec app php artisan db:seed
    ```
 
-4. **Setup frontend**
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
-
-5. **Access the application**
-   - **Frontend**: http://localhost:3000
+4. **Access the application**
+   - **Frontend**: http://localhost:3000 (React.js automatically starts in Docker)
    - **Backend API**: http://localhost:8080/api
 
 ### Option 2: Local Development Setup
@@ -117,10 +110,11 @@ docker compose exec app php artisan test tests/Feature/LoanCalculationTest.php
 ```
 
 ### Test Coverage
-- **82 total tests** with 100% passing rate
-- **Unit tests**: Domain logic, value objects, services, entities
+- **82 total tests** with 235 assertions, 100% passing rate
+- **Unit tests**: Domain logic, value objects, services, entities, factories
 - **Feature tests**: API endpoints, integration testing, database operations
-- **Validation tests**: Input validation and comprehensive error handling
+- **Validation tests**: Input validation, edge cases, and comprehensive error handling
+- **Edge case coverage**: Zero interest rates, high values, boundary conditions
 
 ## API Documentation & Sample Input/Output
 
@@ -141,9 +135,9 @@ docker compose exec app php artisan test tests/Feature/LoanCalculationTest.php
 ```json
 {
   "success": true,
-  "loan_id": 49,
+  "loan_id": 1,
   "loan_details": {
-    "id": 49,
+    "id": 1,
     "loan_amount": 250000,
     "annual_interest_rate": 4.5,
     "loan_term_years": 25,
@@ -276,7 +270,7 @@ frontend/src/
 │   ├── MortgageCalculator.tsx  # Main calculator component
 │   └── ScheduleTable.tsx       # Amortization table display
 ├── services/                   # API Services
-│   └── api.ts                  # API client configuration
+│   └── loanService.ts          # Loan API client
 ├── types/                      # TypeScript Definitions
 │   └── loan.ts                 # Loan-related type definitions
 └── utils/                      # Utility Functions
@@ -352,9 +346,13 @@ APP_KEY=base64:...
 APP_DEBUG=true
 APP_URL=http://localhost:8080
 
-# Database
-DB_CONNECTION=sqlite
-DB_DATABASE=/var/www/database.sqlite
+# Database (Docker setup)
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=mortgage_calculator
+DB_USERNAME=mortgage_user
+DB_PASSWORD=secret
 
 # CORS (for React frontend)
 FRONTEND_URL=http://localhost:3000
@@ -362,8 +360,8 @@ FRONTEND_URL=http://localhost:3000
 
 ### Frontend Configuration
 ```bash
-# React Environment
-REACT_APP_API_URL=http://localhost:8080/api
+# React Environment (automatically configured in Docker)
+REACT_APP_API_URL=http://localhost:8000/api
 ```
 
 ## Validation Rules
