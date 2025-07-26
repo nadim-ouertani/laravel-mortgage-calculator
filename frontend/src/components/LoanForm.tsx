@@ -168,7 +168,7 @@ const LoanForm: React.FC<LoanFormProps> = ({ onSubmit }) => {
                 if (!e.target.checked) {
                   setFormData(prev => ({ ...prev, monthly_extra_payment: 0 }));
                 } else {
-                  setFormData(prev => ({ ...prev, monthly_extra_payment: 500 }));
+                  setFormData(prev => ({ ...prev, monthly_extra_payment: 1 }));
                 }
               }}
               style={{ marginRight: '0.5rem' }}
@@ -185,15 +185,15 @@ const LoanForm: React.FC<LoanFormProps> = ({ onSubmit }) => {
               </label>
               <input
                 type="range"
-                min={100}
+                min={1}
                 max={formData.loan_amount - 1}
-                step={100}
-                value={formData.monthly_extra_payment || 100}
+                step={1}
+                value={formData.monthly_extra_payment || 1}
                 onChange={(e) => handleSliderChange('monthly_extra_payment', Number(e.target.value))}
                 className="extra-slider"
               />
               <div className="slider-labels">
-                <span>AED 100</span>
+                <span>AED 1</span>
                 <span>{formatCurrency(formData.loan_amount - 1)}</span>
               </div>
             </>
