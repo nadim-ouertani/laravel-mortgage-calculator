@@ -1,6 +1,6 @@
 import { LoanData, LoanCalculationResponse } from '../types/loan';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'http://localhost:8080/api';
 
 export const loanService = {
   async calculateLoan(loanData: LoanData): Promise<LoanCalculationResponse> {
