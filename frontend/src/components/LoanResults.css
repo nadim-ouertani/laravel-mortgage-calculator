@@ -1,68 +1,104 @@
 .results {
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.calculator-section {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 2rem;
 }
 
 .results h2 {
-  color: #2c3e50;
-  font-size: 2rem;
+  color: #1e3c72;
+  font-size: 2.4rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .schedule-tabs {
   display: flex;
   gap: 0.5rem;
-  margin: 2rem 0 1rem 0;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 0.5rem;
-  border-radius: 15px;
+  margin: 2.5rem 0 2rem 0;
+  background: rgba(30, 60, 114, 0.08);
+  padding: 0.6rem;
+  border-radius: 16px;
   width: fit-content;
+  box-shadow: 0 4px 12px rgba(30, 60, 114, 0.1);
 }
 
 .tab {
   background: transparent;
-  color: #667eea;
+  color: #1e3c72;
   border: none;
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 2rem;
   border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  position: relative;
 }
 
 .tab.active {
-  background: #667eea;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+  transform: translateY(-1px);
 }
 
 .tab:hover:not(.active) {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(30, 60, 114, 0.12);
+  transform: translateY(-1px);
 }
 
 .schedule-content {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .schedule-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .schedule-header h3 {
-  color: #2c3e50;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  color: #1e3c72;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .schedule-summary {
-  background: rgba(102, 126, 234, 0.05);
-  padding: 1.5rem;
-  border-radius: 15px;
-  border: 1px solid rgba(102, 126, 234, 0.1);
+  background: linear-gradient(135deg, rgba(30, 60, 114, 0.05) 0%, rgba(42, 82, 152, 0.08) 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(30, 60, 114, 0.15);
+  box-shadow: 0 8px 25px rgba(30, 60, 114, 0.1);
 }
 
 @media (max-width: 768px) {
