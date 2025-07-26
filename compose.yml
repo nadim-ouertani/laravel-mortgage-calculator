@@ -73,7 +73,9 @@ services:
       - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
-    command: sh -c "npm install && npm start"
+      - HOST=0.0.0.0
+      - PORT=3000
+    command: sh -c "rm -rf node_modules package-lock.json && npm install && npm start"
     networks:
       - tech_exam_network
     depends_on:
