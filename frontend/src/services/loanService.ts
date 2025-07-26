@@ -1,9 +1,9 @@
-import { LoanData, LoanResult } from '../types/loan';
+import { LoanData, LoanCalculationResponse } from '../types/loan';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
 export const loanService = {
-  async calculateLoan(loanData: LoanData): Promise<LoanResult> {
+  async calculateLoan(loanData: LoanData): Promise<LoanCalculationResponse> {
     const response = await fetch(`${API_BASE_URL}/loans/calculate`, {
       method: 'POST',
       headers: {
