@@ -8,8 +8,8 @@ function App() {
       <header className="app-header">
         <div className="header-content">
           <div className="brand">
-            <h1>UAE Mortgage Calculator</h1>
-            <p className="tagline">Professional loan analysis and amortization planning</p>
+            <h1>Mortgage Calculator</h1>
+            <p className="tagline">PHP LARAVEL PRACTICAL EXAM</p>
           </div>
           <div className="header-badge">
             <span className="tech-stack">Laravel 11 + React.js</span>
@@ -23,7 +23,7 @@ function App() {
       
       <footer className="app-footer">
         <div className="footer-content">
-          <p>&copy; 2025 UAE Mortgage Calculator - Enterprise Financial Planning Tool</p>
+          <p>&copy; 2025 Mortgage Calculator</p>
           <div className="footer-tech">
             <span>Powered by Laravel 11 API & React.js</span>
           </div>
