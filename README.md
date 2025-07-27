@@ -1,6 +1,6 @@
 # Mortgage Loan Calculator
 
-A comprehensive mortgage loan calculator web application built with **Laravel 11** backend API and **React.js TypeScript** frontend. This application allows users to calculate mortgage payments, generate detailed amortization schedules, and analyze the impact of extra payments on loan terms.
+A comprehensive mortgage loan calculator web application built with **Laravel 12** backend API and **React.js TypeScript** frontend. This application allows users to calculate mortgage payments, generate detailed amortization schedules, and analyze the impact of extra payments on loan terms.
 
 ## Features
 
@@ -201,7 +201,7 @@ docker compose exec app php artisan test tests/Feature/LoanCalculationTest.php
 
 ## Project Architecture
 
-### Backend Architecture (Laravel 11)
+### Backend Architecture (Laravel 12)
 ```
 app/
 ├── Application/                  # Application Layer
@@ -419,4 +419,4 @@ This project fully implements all requirements from the PHP Laravel Practical Ex
 
 ---
 
-**Built with Laravel 11 & React.js TypeScript**
+**Built with Laravel 12 & React.js TypeScript**

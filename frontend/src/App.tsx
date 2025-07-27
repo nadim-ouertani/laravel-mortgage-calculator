@@ -12,7 +12,7 @@ function App() {
             <p className="tagline">PHP LARAVEL PRACTICAL EXAM</p>
           </div>
           <div className="header-badge">
-            <span className="tech-stack">Laravel 11 + React.js</span>
+            <span className="tech-stack">Laravel 12 + React.js</span>
           </div>
         </div>
       </header>
@@ -25,7 +25,7 @@ function App() {
         <div className="footer-content">
           <p>&copy; 2025 Mortgage Calculator</p>
           <div className="footer-tech">
-            <span>Powered by Laravel 11 API & React.js</span>
+            <span>Powered by Laravel 12 API & React.js</span>
           </div>
         </div>
       </footer>
