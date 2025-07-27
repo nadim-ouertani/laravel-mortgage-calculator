@@ -26,8 +26,8 @@ A comprehensive mortgage loan calculator web application built with **Laravel 12
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd tech-exam
+   git clone https://github.com/nadim-ouertani/laravel-mortgage-calculator.git
+   cd laravel-mortgage-calculator
    ```
 
 2. **Start the application**
