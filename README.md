@@ -86,6 +86,67 @@ A comprehensive mortgage loan calculator web application built with **Laravel 12
    npm start
    ```
 
+## Frontend Source Code Review
+
+### Accessing the Frontend Code
+
+The React.js TypeScript frontend source code is located in the `frontend/` directory. Here's how to access and review it:
+
+1. **Navigate to the frontend directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Frontend directory structure**
+   ```
+   frontend/
+   ├── src/                     # Main source code directory
+   │   ├── components/          # React components (TSX files)
+   │   ├── services/            # API service layer
+   │   ├── types/               # TypeScript type definitions
+   │   ├── utils/               # Utility functions
+   │   ├── App.tsx              # Main application component
+   │   └── index.tsx            # Application entry point
+   ├── public/                  # Static assets
+   ├── package.json             # Dependencies and scripts
+   └── tsconfig.json            # TypeScript configuration
+   ```
+
+3. **Key files to review**
+   - **`src/components/MortgageCalculator.tsx`** - Main calculator component
+   - **`src/components/LoanForm.tsx`** - User input form with validation
+   - **`src/components/LoanResults.tsx`** - Results display component
+   - **`src/components/ScheduleTable.tsx`** - Amortization schedule table
+   - **`src/services/loanService.ts`** - API integration layer
+   - **`src/types/loan.ts`** - TypeScript interfaces and types
+
+4. **Running in development mode**
+   ```bash
+   # Using Docker (recommended)
+   docker compose up -d
+   # Frontend will be available at http://localhost:3000
+   
+   # Or locally
+   cd frontend
+   npm install
+   npm start
+   ```
+
+5. **Frontend development tools**
+   ```bash
+   # Install dependencies
+   npm install
+   
+   # Start development server with hot reload
+   npm start
+   
+   # Build production version
+   npm run build
+   
+   # Run tests
+   npm test
+   ```
+
 ## Testing
 
 ### Run All Tests
