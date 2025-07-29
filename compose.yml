@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -61,6 +59,25 @@ services:
       - "6380:6379"
     networks:
       - tech_exam_network
+
+  frontend:
+    image: node:18-alpine
+    container_name: tech_exam_frontend
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - HOST=0.0.0.0
+      - PORT=3000
+    command: sh -c "npm ci && npm start"
+    networks:
+      - tech_exam_network
+    depends_on:
+      - webserver
 
 
 networks:

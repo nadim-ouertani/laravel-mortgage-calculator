@@ -22,3 +22,40 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Frontend build and dependencies
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Package lock files
+frontend/package-lock.json
+frontend/yarn.lock
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project planning files (internal use only)
+GIT_COMMIT_PLAN.txt
+*.plan
+*.strategy
